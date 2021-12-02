@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { LatLngExpression, LatLng } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -13,8 +13,8 @@ import Services from "../../services";
 const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 export default function Map() {
-  const [markers, setMarkers] = useState(data.markers);
-  const [sigmet, setSigmet] = useState(data.markers);
+  const [markers, setMarkers] = useState([]);
+  const [sigmet, setSigmet] = useState([]);
   const [center, setCenter] = useState(defaultCenter);
   const [modal, setModal] = useState(false);
   const textRef = useRef(null);
@@ -54,7 +54,24 @@ export default function Map() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {markers.map((m, i) => {
+          {markers.map((marker) => (
+            <Marker position={[marker.latitude, marker.longitude]}>
+              <Popup>
+                {marker.metar_message}
+                <br />
+                <br />
+                {marker.taf_message}
+              </Popup>
+            </Marker>
+          ))}
+          {sigmet.map((item) => (
+            <Circle
+              center={{ lat: item.latitude, lng: item.longitude }}
+              fillColor="blue"
+              radius={200}
+            />
+          ))}
+          {/* {markers.map((m, i) => {
             const pos: LatLngExpression = new LatLng(m.pos[0], m.pos[1]);
             return (
               <div style={{ backgroundColor: " red" }}>
@@ -63,7 +80,7 @@ export default function Map() {
                 </Marker>
               </div>
             );
-          })}
+          })} */}
         </MapContainer>
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
