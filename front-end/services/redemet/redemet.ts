@@ -19,7 +19,7 @@ export async function getAerodromes() {
   }
 }
 
-export async function getTsc() {
+export async function getSigmet() {
   try {
     const response = await api.get("/sigmet");
     return response;
