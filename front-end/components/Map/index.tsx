@@ -36,6 +36,8 @@ export default function Map() {
     getSigmet();
   }, []);
 
+  const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
+
   return (
     <div className="relative h-screen">
       <h1 className="header">REDEMET</h1>
@@ -64,13 +66,14 @@ export default function Map() {
               </Popup>
             </Marker>
           ))}
-          {sigmet.map((item) => (
-            <Circle
-              center={{ lat: item.latitude, lng: item.longitude }}
-              fillColor="blue"
-              radius={200}
-            />
-          ))}
+          {sigmet.map((item) => {
+            const center: LatLngExpression = new LatLng(
+              item.latitude,
+              item.longitude
+            );
+
+            return <Circle center={center} fillColor="blue" radius={200} />;
+          })}
           {/* {markers.map((m, i) => {
             const pos: LatLngExpression = new LatLng(m.pos[0], m.pos[1]);
             return (
