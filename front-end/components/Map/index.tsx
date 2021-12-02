@@ -14,6 +14,7 @@ const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 export default function Map() {
   const [markers, setMarkers] = useState(data.markers);
+  const [sigmet, setSigmet] = useState(data.markers);
   const [center, setCenter] = useState(defaultCenter);
   const [modal, setModal] = useState(false);
   const textRef = useRef(null);
@@ -22,19 +23,17 @@ export default function Map() {
 
   const getAerodromes = async () => {
     const response = await Services.redemet.getAerodromes();
-    console.log(response);
-    // setMarkers(response.data);
+    setMarkers(response.data);
   };
 
-  const getTsc = async () => {
+  const getSigmet = async () => {
     const response = await Services.redemet.getTsc();
-    console.log(response);
-    //setStsc(response.data);
+    setSigmet(response.data);
   };
 
   useEffect(() => {
     getAerodromes();
-    getTsc();
+    getSigmet();
   }, []);
 
   return (

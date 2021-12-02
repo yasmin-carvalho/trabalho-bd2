@@ -12,7 +12,7 @@ import api from "../api";
 
 export async function getAerodromes() {
   try {
-    const response = await api.get("/aerodromes");
+    const response = await api.get("/aerodromos");
     return response;
   } catch (error) {
     return error;
@@ -21,7 +21,7 @@ export async function getAerodromes() {
 
 export async function getTsc() {
   try {
-    const response = await api.get("/tsc");
+    const response = await api.get("/sigmet");
     return response;
   } catch (error) {
     return error;
