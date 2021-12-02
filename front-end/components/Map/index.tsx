@@ -27,9 +27,11 @@ export default function Map() {
   };
 
   const getSigmet = async () => {
-    const response = await Services.redemet.getTsc();
+    const response = await Services.redemet.getSigmet();
     setSigmet(response.data);
   };
+
+  console.log('####', markers)
 
   useEffect(() => {
     getAerodromes();
