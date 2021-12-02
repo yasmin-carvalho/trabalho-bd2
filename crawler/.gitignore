@@ -1,0 +1,6 @@
+node_modules/
+npm-error.log
+.env
+.nyc_output
+coverage
+build/

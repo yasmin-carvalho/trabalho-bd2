@@ -1,0 +1,20 @@
+{
+  "name": "trabalhobd2",
+  "version": "1.0.0",
+  "description": "trabalhobd2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "sqlstring": "^2.3.2"
+  }
+}
