@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import L, { LatLngExpression, LatLng } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -30,27 +30,6 @@ export default function Map() {
     const response = await Services.redemet.getSigmet();
     setSigmet(response.data);
   };
-
-  // console.log('####', sigmet)
-
-  // const latLon = sigmet.map((item) => (item.lat_lon.lat_lon[0]))
-
-  // console.log("palavrao",latLon)
-
-  // const latLonIntem = latLon.map((item) => item)
-
-  // console.log("palavrinha",latLonIntem)
-
-  sigmet.map(element => {
-    console.log('ELEMENT', element)
-    element.lat_lon.lat_lon.map(j => {
-      console.log('LAT', +j[0])
-      console.log('LON', +j[1])
-    })
-  });
-
-  // console.log('SIGMET', sigmet.lat_lon.lat_lon)
-
 
   useEffect(() => {
     getAerodromes();
@@ -85,38 +64,11 @@ export default function Map() {
               </Popup>
             </Marker>
           ))}
-          {/* {sigmet.map((marker, i) => (
-            <Marker key={i} position={[marker.latitude, marker.longitude]}>
-              <Popup>
-                {marker.metar_message}
-                <br />
-                <br />
-                {marker.taf_message}
-              </Popup>
-            </Marker>
-          ))} */}
           {
-              sigmet.map(element => (
-                element.lat_lon.lat_lon.map(j => (
-                  <Circle center={[ +j[0], +j[1] ]} pathOptions={{ color: 'red' }} radius={200} />
-                ))
-              ))
+            sigmet.map(element => (
+              <Polygon pathOptions={{ color: 'purple' }} positions={element.lat_lon.lat_lon} />
+            ))
           }
-          {/* { sigmet && (sigmet.map((item) => {
-            
-            return <Circle center={{ lat: item.lat_lon, lng: item.longitude }} fillColor="blue" radius={200} />;
-          })) } */}
-      
-          {/* {markers.map((m, i) => {
-            const pos: LatLngExpression = new LatLng(m.pos[0], m.pos[1]);
-            return (
-              <div style={{ backgroundColor: " red" }}>
-                <Marker position={pos} key={i}>
-                  <Popup>{m.text}</Popup>
-                </Marker>
-              </div>
-            );
-          })} */}
         </MapContainer>
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
