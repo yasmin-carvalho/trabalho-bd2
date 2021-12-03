@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import L, { LatLngExpression, LatLng } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon, Tooltip } from "react-leaflet";
+import { LatLngExpression, LatLng } from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polygon,
+  Tooltip,
+} from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-
-import * as data from "@/data/data.json";
 
 import Services from "../../services";
 
@@ -64,16 +69,16 @@ export default function Map() {
               </Popup>
             </Marker>
           ))}
-          {
-            sigmet.map(element => (
-              <Polygon pathOptions={{ color: `${element.fenomeno_cor}` }} positions={element.lat_lon.lat_lon} >
-                <Tooltip sticky>{`${element.fenomeno_comp} \u00A0 ${element.id_fir}`}</Tooltip>
-
-
-                </Polygon>
-
-            ))
-          }
+          {sigmet.map((element) => (
+            <Polygon
+              pathOptions={{ color: `${element.fenomeno_cor}` }}
+              positions={element.lat_lon.lat_lon}
+            >
+              <Tooltip
+                sticky
+              >{`${element.fenomeno_comp} \u00A0 ${element.id_fir}`}</Tooltip>
+            </Polygon>
+          ))}
         </MapContainer>
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
@@ -193,11 +198,12 @@ export default function Map() {
                   className="flex justify-center rounded-md border bg-blue-500 shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-white hover:text-indigo-500 hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => {
                     const marker = {
-                      text: textRef.current.value,
-                      pos: [latRef.current.value, longRef.current.value],
+                      metar_message: textRef.current.value,
+                      latitude: latRef.current.value,
+                      longitude: longRef.current.value,
                     };
 
-                    setMarkers([marker, ...markers]);
+                    setMarkers([{ marker, ...markers }]);
                     setModal(false);
                   }}
                 >
