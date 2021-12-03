@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { LatLngExpression, LatLng } from "leaflet";
+import L, { LatLngExpression, LatLng } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -14,7 +14,7 @@ const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 export default function Map() {
   const [markers, setMarkers] = useState([]);
-  const [sigmet, setSigmet] = useState([]);
+  const [sigmet, setSigmet] = useState<any>([]);
   const [center, setCenter] = useState(defaultCenter);
   const [modal, setModal] = useState(false);
   const textRef = useRef(null);
@@ -31,14 +31,31 @@ export default function Map() {
     setSigmet(response.data);
   };
 
-  console.log('####', markers)
+  // console.log('####', sigmet)
+
+  // const latLon = sigmet.map((item) => (item.lat_lon.lat_lon[0]))
+
+  // console.log("palavrao",latLon)
+
+  // const latLonIntem = latLon.map((item) => item)
+
+  // console.log("palavrinha",latLonIntem)
+
+  sigmet.map(element => {
+    console.log('ELEMENT', element)
+    element.lat_lon.lat_lon.map(j => {
+      console.log('LAT', +j[0])
+      console.log('LON', +j[1])
+    })
+  });
+
+  // console.log('SIGMET', sigmet.lat_lon.lat_lon)
+
 
   useEffect(() => {
     getAerodromes();
     getSigmet();
   }, []);
-
-  const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
   return (
     <div className="relative h-screen">
@@ -58,8 +75,8 @@ export default function Map() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {markers.map((marker) => (
-            <Marker position={[marker.latitude, marker.longitude]}>
+          {markers.map((marker, i) => (
+            <Marker key={i} position={[marker.latitude, marker.longitude]}>
               <Popup>
                 {marker.metar_message}
                 <br />
@@ -68,14 +85,28 @@ export default function Map() {
               </Popup>
             </Marker>
           ))}
-          {sigmet.map((item) => {
-            const center: LatLngExpression = new LatLng(
-              item.latitude,
-              item.longitude
-            );
-
-            return <Circle center={center} fillColor="blue" radius={200} />;
-          })}
+          {/* {sigmet.map((marker, i) => (
+            <Marker key={i} position={[marker.latitude, marker.longitude]}>
+              <Popup>
+                {marker.metar_message}
+                <br />
+                <br />
+                {marker.taf_message}
+              </Popup>
+            </Marker>
+          ))} */}
+          {
+              sigmet.map(element => (
+                element.lat_lon.lat_lon.map(j => (
+                  <Circle center={[ +j[0], +j[1] ]} pathOptions={{ color: 'red' }} radius={200} />
+                ))
+              ))
+          }
+          {/* { sigmet && (sigmet.map((item) => {
+            
+            return <Circle center={{ lat: item.lat_lon, lng: item.longitude }} fillColor="blue" radius={200} />;
+          })) } */}
+      
           {/* {markers.map((m, i) => {
             const pos: LatLngExpression = new LatLng(m.pos[0], m.pos[1]);
             return (
