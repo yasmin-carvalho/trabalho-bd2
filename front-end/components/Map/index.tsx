@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import L, { LatLngExpression, LatLng } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon, Tooltip } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -66,7 +66,12 @@ export default function Map() {
           ))}
           {
             sigmet.map(element => (
-              <Polygon pathOptions={{ color: 'purple' }} positions={element.lat_lon.lat_lon} />
+              <Polygon pathOptions={{ color: `${element.fenomeno_cor}` }} positions={element.lat_lon.lat_lon} >
+                <Tooltip sticky>{`${element.fenomeno_comp} \u00A0 ${element.id_fir}`}</Tooltip>
+
+
+                </Polygon>
+
             ))
           }
         </MapContainer>
