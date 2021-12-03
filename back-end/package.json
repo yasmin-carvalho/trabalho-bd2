@@ -1,15 +1,11 @@
 {
-  "name": "trabalhobd2",
+  "name": "REDEMET-API",
   "version": "1.0.0",
-  "description": "trabalhobd2",
+  "description": "REDEMET-API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",

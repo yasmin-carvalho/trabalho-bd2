@@ -1,4 +1,4 @@
-# trabalhobd2
+# REDEMET API
 
 ## Site
 
@@ -55,7 +55,7 @@ CREATE TABLE public.taf(
 CREATE TABLE public.sigmet(
 	id SERIAL PRIMARY KEY,
 	id_fir character(4) NOT NULL,
-	lat_lon jsonb NOT NULL, 
+	lat_lon jsonb NOT NULL,
 	validate_inicial timestamp without time zone NOT NULL,
 	validate_final timestamp without time zone NOT NULL,
 	message text COLLATE pg_catalog."default" NOT NULL,

@@ -1,5 +1,4 @@
 const express = require("express");
-var SqlString = require("sqlstring");
 
 const app = express();
 var cors = require("cors");
@@ -62,7 +61,9 @@ app.get("/aerodromos_list", (req, res, next) => {
 
 app.get("/sigmet", (req, res, next) => {
   pool
-    .query(`SELECT sigmet.id_fir, sigmet.lat_lon, sigmet.validate_inicial, sigmet.validate_final, sigmet.message, sigmet.fenomeno, sigmet.fenomeno_comp, sigmet.fenomeno_cor, sigmet.fenomeno_transparencia FROM public.sigmet`)
+    .query(
+      `SELECT sigmet.id_fir, sigmet.lat_lon, sigmet.validate_inicial, sigmet.validate_final, sigmet.message, sigmet.fenomeno, sigmet.fenomeno_comp, sigmet.fenomeno_cor, sigmet.fenomeno_transparencia FROM public.sigmet`
+    )
 
     .then((testData) => {
       res.send(testData.rows);
@@ -84,12 +85,18 @@ app.get("/adhoc", (req, res, next) => {
   const taf = req.query?.taf === "true" ? true : false;
   const limit = parseInt(req.query?.limit ?? 100, 10);
 
-  if(metar) {
-    fields = fields.concat(["metar.validade_inicial AS metar_validade_inicial", "metar.message AS metar_message"]);
+  if (metar) {
+    fields = fields.concat([
+      "metar.validade_inicial AS metar_validade_inicial",
+      "metar.message AS metar_message",
+    ]);
   }
 
   if (taf) {
-    fields = fields.concat(["taf.validade_inicial AS taf_validade_inicial", "taf.message AS taf_message"]);
+    fields = fields.concat([
+      "taf.validade_inicial AS taf_validade_inicial",
+      "taf.message AS taf_message",
+    ]);
   }
 
   let query = `SELECT ${fields.join(", ")} FROM aerodromos`;
@@ -120,17 +127,13 @@ app.get("/adhoc", (req, res, next) => {
     const majorLat = region[0][0] > region[1][0] ? region[0][0] : region[1][0];
     const majorLng = region[0][1] > region[1][1] ? region[0][1] : region[1][1];
 
-    conditions.push(
-      `aerodromos.latitude BETWEEN ${minorLat} AND ${majorLat}`
-    );
-    conditions.push(
-      `aerodromos.longitude BETWEEN ${minorLng} AND ${majorLng}`
-    );
+    conditions.push(`aerodromos.latitude BETWEEN ${minorLat} AND ${majorLat}`);
+    conditions.push(`aerodromos.longitude BETWEEN ${minorLng} AND ${majorLng}`);
     query += conditions.join(" AND ");
   }
 
-  if(order.length > 0) {
-    query += ` ORDER BY ${order.map(item => item.join(" ")).join(", ")}`;
+  if (order.length > 0) {
+    query += ` ORDER BY ${order.map((item) => item.join(" ")).join(", ")}`;
   }
 
   query += ` LIMIT ${limit}`;
