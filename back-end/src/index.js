@@ -48,17 +48,6 @@ app.get("/aerodromos", (req, res, next) => {
     });
 });
 
-app.get("/aerodromos_list", (req, res, next) => {
-  pool
-    .query(
-      `SELECT aerodromos.code, aerodromos.name, aerodromos.latitude, aerodromos.longitude FROM aerodromos ORDER BY aerodromos.code`
-    )
-
-    .then((testData) => {
-      res.send(testData.rows);
-    });
-});
-
 app.get("/sigmet", (req, res, next) => {
   pool
     .query(
