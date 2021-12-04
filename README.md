@@ -1,8 +1,19 @@
 # REDEMET API
 
-## Site
+### Neste relatório foi utilizada a API da REDEMET que fornece acesso a vários produtos meteorológicos. Foram implementadas rotas para retornar informações de Aeródromos e também mensagens SIGMET, METAR e TAF de países disponíveis no banco de dados.
+
+## API link
 
 - https://ajuda.decea.mil.br/base-de-conhecimento/api-redemet-o-que-e/
+
+## Tecnologias utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
+
+- [NextJS](https://nextjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
+- [NodeJS](https://nodejs.org/en/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 ## Script do banco de dados
 
@@ -66,3 +77,21 @@ CREATE TABLE public.sigmet(
 
 );
 ```
+
+# Relatório da API REDEMET - Etapas 1, 2 e 3
+
+### Disciplina: Banco de Dados II
+
+### Docente: Vanessa Cristina
+
+### Equipe:
+
+### Yasmin Karolyne Aniceto Carvalho - 2018010440
+
+### Rodrigo Duarte Silva Luz - 2019003520
+
+### Luiz Fernando de Souza - 2019008482
+
+### Guilherme M. Bortoletto - 2019007734
+
+### Guilherme de Assis Mello - 2018008521
