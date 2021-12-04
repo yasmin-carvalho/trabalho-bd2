@@ -78,22 +78,20 @@ CREATE TABLE public.sigmet(
 );
 ```
 
-# RELATÓRIO: REDEMET
+# Relatório da API REDEMET - Etapas 1, 2 e 3
 
-## Etapas 1, 2 e 3
+### Disciplina: Banco de Dados II
 
-## Disciplina: Banco de Dados II
+### Docente: Vanessa Cristina
 
-## Docente: Vanessa Cristina
+### Equipe:
 
-## Equipe:
+### Yasmin Karolyne Aniceto Carvalho - 2018010440
 
-## Yasmin Karolyne Aniceto Carvalho - 2018010440
+### Rodrigo Duarte Silva Luz - 2019003520
 
-## Rodrigo Duarte Silva Luz - 2019003520
+### Luiz Fernando de Souza - 2019008482
 
-## Luiz Fernando de Souza - 2019008482
+### Guilherme M. Bortoletto - 2019007734
 
-## Guilherme M. Bortoletto - 2019007734
-
-## Guilherme de Assis Mello - 2018008521
+### Guilherme de Assis Mello - 2018008521
