@@ -21,12 +21,6 @@ a {
   box-sizing: border-box;
 }
 
-.container {
-  height: 90vh;
-  margin: auto;
-  margin-top: 8px;
-}
-
 .header {
   display: flex;
   justify-content: center;
@@ -57,7 +51,74 @@ a {
   color: white;
   font-size: 16px;
   font-weight: bold;
-  border-top: 1px solid lightgreen;
-  margin-top: 10px;
+  border-top: 2px solid black;
+  margin-top: 20px;
   text-align: center;
+}
+
+.container {
+  height: 100vh;
+  margin: auto;
+  padding: 0 16px;
+}
+
+.aero-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(203, 15, 209);
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.wrapper {
+  width: 100%;
+  margin-top: 30px;
+  padding: 18px;
+  border: 3px solid white;
+  border-radius: 8px;
+
+  box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px,
+    rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px,
+    rgb(255, 85, 85) 0px 0px 0px 15px;
+}
+
+.aerodrome-search {
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.4em !important;
+  font-weight: 700 !important;
+}
+
+.open {
+  display: block !important;
+}
+
+.searchMap {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 30px;
+}
+
+.searchNome {
+  margin-bottom: 30px;
+}
+
+.fieldBlock {
+  padding-bottom: 30px;
+}
+
+.sortField {
+  display: flex;
+  width: 50%;
+}
+
+.modal-90w {
+  width: auto;
+  max-width: 90vw;
 }

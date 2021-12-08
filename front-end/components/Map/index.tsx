@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { LatLngExpression, LatLng } from "leaflet";
+import L, { LatLngExpression, LatLng } from "leaflet";
 import {
   MapContainer,
   TileLayer,
+  useMapEvents,
+  MapConsumer,
   Marker,
   Popup,
   Polygon,
   Tooltip,
+  Rectangle,
 } from "react-leaflet";
+import * as RB from "react-bootstrap";
+import Multiselect from "multiselect-react-dropdown";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -18,38 +23,436 @@ import Services from "../../services";
 const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 export default function Map() {
-  const [markers, setMarkers] = useState([]);
-  const [sigmet, setSigmet] = useState<any>([]);
   const [center, setCenter] = useState(defaultCenter);
   const [modal, setModal] = useState(false);
   const textRef = useRef(null);
   const latRef = useRef(null);
   const longRef = useRef(null);
 
-  const getAerodromes = async () => {
-    const response = await Services.redemet.getAerodromes();
-    setMarkers(response.data);
+  const [searchType, setSearchType] = useState(null);
+  const [aerodromesData, setAerodromesData] = useState([]);
+
+  const [selectedAerodromes, setSelectedAerodromes] = useState([]);
+  const [selectedArea, setSelectedArea] = useState([]);
+
+  const [selectedFields, setSelectedFields] = useState([]);
+
+  const [order1, setOrder1] = useState(null);
+  const [order2, setOrder2] = useState(null);
+  const [order3, setOrder3] = useState(null);
+  const [order4, setOrder4] = useState(null);
+  const [asc1, setAsc1] = useState(null);
+  const [asc2, setAsc2] = useState(null);
+  const [asc3, setAsc3] = useState(null);
+  const [asc4, setAsc4] = useState(null);
+
+  const [extraMetar, setExtraMetar] = useState(false);
+  const [extraTaf, setExtraTaf] = useState(false);
+
+  const [limit, setLimit] = useState(100);
+
+  const [searchData, setSearchData] = useState(null);
+
+  function LocationMarker() {
+    const map = useMapEvents({
+      click(event) {
+        console.log(event);
+        if (selectedArea.length === 0) {
+          setSelectedArea([[event.latlng.lat, event.latlng.lng]]);
+          return;
+        }
+
+        if (selectedArea.length === 1) {
+          setSelectedArea([
+            selectedArea[0],
+            [event.latlng.lat, event.latlng.lng],
+          ]);
+          return;
+        }
+
+        setSelectedArea([]);
+      },
+    });
+    return null;
+  }
+
+  const getAerodromesList = async () => {
+    const response = await Services.redemet.getAerodromesList();
+    setAerodromesData(
+      response.data.slice(0, 1000).map((item) => ({
+        label: item.code + " - " + item.name,
+        code: item.code,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      }))
+    );
   };
 
-  const getSigmet = async () => {
-    const response = await Services.redemet.getSigmet();
-    setSigmet(response.data);
+  const searchAdhoc = async () => {
+    const params = {} as any;
+    if (searchType === "nome") {
+      params.codes = selectedAerodromes.join(",");
+    } else {
+      params.region = selectedArea.map((item) => item.join(",")).join(";");
+    }
+
+    params.fields = selectedFields.join(",");
+
+    const orders = [];
+    if (order1 && asc1) {
+      orders.push(order1 + "," + asc1);
+    }
+    if (order2 && asc2) {
+      orders.push(order2 + "," + asc2);
+    }
+    if (order3 && asc3) {
+      orders.push(order3 + "," + asc3);
+    }
+    if (order4 && asc4) {
+      orders.push(order4 + "," + asc4);
+    }
+
+    if (orders.length > 0) {
+      params.order = orders.join(";");
+    }
+
+    params.metar = extraMetar;
+    params.taf = extraTaf;
+
+    params.limit = limit;
+
+    const response = await Services.redemet.getAdHoc(params);
+    setSearchData(response.data);
   };
 
   useEffect(() => {
-    getAerodromes();
-    getSigmet();
+    //getAerodromesList();
   }, []);
 
   return (
     <div className="relative h-screen">
       <h1 className="header">REDEMET</h1>
       <h1 className="sub-header">
-        Tenha acesso de modo rápido e seguro a diversas informações
-        meteorológicas com a API da REDEMET :)
+        Relatórios Ad-Hoc gerados dinamicamente para a base de dados analisada
+        :)
       </h1>
       <div className="container">
-        <MapContainer
+        <div className="wrapper">
+          <div className="aerodrome-search">
+            <h1 className="aero-title">Selecione os aeródromos</h1>
+
+            <RB.ButtonGroup aria-label="Basic example">
+              <RB.Button
+                variant={searchType === "nome" ? "primary" : "secondary"}
+                onClick={() => {
+                  setSearchType("nome");
+                  setSelectedAerodromes([]);
+                }}
+              >
+                Nome
+              </RB.Button>
+              <RB.Button
+                variant={searchType === "regiao" ? "primary" : "secondary"}
+                onClick={() => {
+                  setSearchType("regiao");
+                  setSelectedArea([]);
+                }}
+              >
+                Região
+              </RB.Button>
+            </RB.ButtonGroup>
+          </div>
+
+          {searchType === "nome" && (
+            <div className="searchNome">
+              <Multiselect
+                options={aerodromesData}
+                displayValue="label"
+                placeholder="Selecione os aeródromos"
+                onSelect={(aerodromes) =>
+                  setSelectedAerodromes(aerodromes.map((item) => item.code))
+                }
+                onRemove={(aerodromes) =>
+                  setSelectedAerodromes(aerodromes.map((item) => item.code))
+                }
+                showArrow
+                showCheckbox
+              />
+            </div>
+          )}
+
+          {searchType === "regiao" && (
+            <div className="searchMap">
+              <MapContainer
+                center={center}
+                zoom={13}
+                scrollWheelZoom={false}
+                className="h-full z-0"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                <LocationMarker />
+
+                {selectedArea.length === 1 && (
+                  <Rectangle
+                    bounds={[selectedArea[0], selectedArea[0]]}
+                    pathOptions={{ color: "red" }}
+                  />
+                )}
+                {selectedArea.length === 2 && (
+                  <Rectangle
+                    bounds={selectedArea}
+                    pathOptions={{ color: "red" }}
+                  />
+                )}
+              </MapContainer>
+            </div>
+          )}
+
+          <div className="fieldBlock">
+            <h2>Campos</h2>
+
+            <Multiselect
+              options={[
+                { label: "Código", value: "code" },
+                { label: "Nome", value: "name" },
+                { label: "Latitude", value: "latitude" },
+                { label: "Longitude", value: "longitude" },
+              ]}
+              displayValue="label"
+              placeholder="Selecione os campos"
+              onSelect={(aerodromes) =>
+                setSelectedFields(aerodromes.map((item) => item.value))
+              }
+              onRemove={(aerodromes) =>
+                setSelectedFields(aerodromes.map((item) => item.value))
+              }
+              showArrow
+              showCheckbox
+            />
+          </div>
+
+          <div className="fieldBlock">
+            <h2>Ordenação</h2>
+
+            <div className="sortFields">
+              <div className="sortField">
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setOrder1(event.target.value);
+                    } else {
+                      setOrder1(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </RB.Form.Control>
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setAsc1(event.target.value);
+                    } else {
+                      setAsc1(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </RB.Form.Control>
+              </div>
+
+              <div className="sortField">
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setOrder2(event.target.value);
+                    } else {
+                      setOrder2(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </RB.Form.Control>
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setAsc2(event.target.value);
+                    } else {
+                      setAsc2(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </RB.Form.Control>
+              </div>
+
+              <div className="sortField">
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setOrder3(event.target.value);
+                    } else {
+                      setOrder3(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </RB.Form.Control>
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setAsc3(event.target.value);
+                    } else {
+                      setAsc3(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </RB.Form.Control>
+              </div>
+
+              <div className="sortField">
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setOrder4(event.target.value);
+                    } else {
+                      setOrder4(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </RB.Form.Control>
+                <RB.Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setAsc4(event.target.value);
+                    } else {
+                      setAsc4(null);
+                    }
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </RB.Form.Control>
+              </div>
+            </div>
+          </div>
+
+          <div className="fieldBlock">
+            <h2>Itens adicionais</h2>
+
+            <RB.Form.Check
+              type="checkbox"
+              label="METAR (Meteorologia em tempo presente)"
+              checked={extraMetar}
+              onChange={(event) => setExtraMetar(event.target.checked)}
+            />
+            <RB.Form.Check
+              type="checkbox"
+              label="TAF (Previsão meteorológica)"
+              checked={extraTaf}
+              onChange={(event) => setExtraTaf(event.target.checked)}
+            />
+          </div>
+
+          <div className="fieldBlock">
+            <h2>Limite de registros</h2>
+
+            <RB.Form.Control
+              type="text"
+              placeholder="Limite"
+              value={limit}
+              onChange={(event) => setLimit(event.target.value)}
+            />
+          </div>
+
+          <div className="fieldBlock">
+            <RB.Button
+              variant="primary"
+              onClick={() => searchAdhoc()}
+              disabled={
+                !(
+                  (selectedAerodromes.length > 0 ||
+                    selectedArea.length === 2) &&
+                  selectedFields.length > 0 &&
+                  limit
+                )
+              }
+            >
+              Pesquisar
+            </RB.Button>
+          </div>
+        </div>
+
+        <RB.Modal
+          show={searchData}
+          dialogClassName="modal-90w"
+          onHide={() => setSearchData(null)}
+        >
+          <RB.Modal.Header closeButton>
+            <RB.Modal.Title id="contained-modal-title-vcenter">
+              Resultados da pesquisa
+            </RB.Modal.Title>
+          </RB.Modal.Header>
+          <RB.Modal.Body>
+            {searchData && searchData.length > 0 && (
+              <RB.Table striped bordered hover>
+                <thead>
+                  <tr key={"header"}>
+                    {Object.keys(searchData[0]).map((key) => (
+                      <th>{key}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {searchData.map((item) => (
+                    <tr key={item.id}>
+                      {Object.values(item).map((val) => (
+                        <td>{val}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </RB.Table>
+            )}
+          </RB.Modal.Body>
+        </RB.Modal>
+        {/* <MapContainer
           center={center}
           zoom={13}
           scrollWheelZoom={false}
@@ -59,161 +462,12 @@ export default function Map() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {markers.map((marker, i) => (
-            <Marker key={i} position={[marker.latitude, marker.longitude]}>
-              <Popup>
-                {marker.metar_message}
-                <br />
-                <br />
-                {marker.taf_message}
-              </Popup>
-            </Marker>
-          ))}
-          {sigmet.map((element) => (
-            <Polygon
-              pathOptions={{ color: `${element.fenomeno_cor}` }}
-              positions={element.lat_lon.lat_lon}
-            >
-              <Tooltip
-                sticky
-              >{`${element.fenomeno_comp} \u00A0 ${element.id_fir}`}</Tooltip>
-            </Polygon>
-          ))}
-        </MapContainer>
+        </MapContainer> */}
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
           Guilherme de Assis Mello e Luiz Fernando de Souza
         </h1>
       </div>
-      <button
-        className="rounded-full h-24 w-24 flex items-center justify-center absolute bottom-4 right-4 z-10 bg-gray-500 text-white font-sans font-bold text-lg"
-        onClick={() => setModal(true)}
-      >
-        +
-      </button>
-      {modal && (
-        <div className="fixed z-20 inset-0 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
-              className="fixed inset-0 transition-opacity"
-              aria-hidden="true"
-            >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <div
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modal-headline"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="flex flex-col">
-                  <div className="flex items-center justify-center h-12 rounded-full bg-green-100 mb-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      className="h-6 w-6 text-indigo-500 mr-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-headline"
-                    >
-                      Novo ponto
-                    </h3>
-                  </div>
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <div className="mt-2">
-                      <label
-                        htmlFor="latitude"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Latitude
-                      </label>
-                      <input
-                        type="text"
-                        name="latitude"
-                        id="latitude"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md border-2 px-4 py-2"
-                        ref={latRef}
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <label
-                        htmlFor="long"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Longitude
-                      </label>
-                      <input
-                        type="text"
-                        name="long"
-                        id="long"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md border-2 px-4 py-2"
-                        ref={longRef}
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <label
-                        htmlFor="text"
-                        className="block text-sm font-medium text-gray-700 text-left"
-                      >
-                        Mensagem
-                      </label>
-                      <input
-                        type="text"
-                        name="text"
-                        id="text"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md border-2 px-4 py-2"
-                        ref={textRef}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 flex flex-row justify-between">
-                <button
-                  type="button"
-                  className="flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-purple-300 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setModal(false)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  className="flex justify-center rounded-md border bg-blue-500 shadow-sm px-4 py-2 text-base font-medium text-white hover:bg-white hover:text-indigo-500 hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => {
-                    const marker = {
-                      metar_message: textRef.current.value,
-                      latitude: latRef.current.value,
-                      longitude: longRef.current.value,
-                    };
-
-                    setMarkers([{ marker, ...markers }]);
-                    setModal(false);
-                  }}
-                >
-                  Salvar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
