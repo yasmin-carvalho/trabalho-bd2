@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import L, { LatLngExpression, LatLng } from "leaflet";
+
+import { LatLngExpression, LatLng } from "leaflet";
 import {
   MapContainer,
   TileLayer,
@@ -11,8 +12,10 @@ import {
   Tooltip,
   Rectangle,
 } from "react-leaflet";
-import * as RB from "react-bootstrap";
+
 import Multiselect from "multiselect-react-dropdown";
+
+import { ButtonGroup, Button, Form, Modal } from "react-bootstrap";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -138,79 +141,80 @@ export default function Map() {
       </h1>
       <div className="container">
         <div className="wrapper">
-          <div className="aerodrome-search">
+          <div className="name-and-region">
             <h1 className="aero-title">Selecione os aeródromos</h1>
 
-            <RB.ButtonGroup aria-label="Basic example">
-              <RB.Button
-                variant={searchType === "nome" ? "primary" : "secondary"}
+            <div className="button-container">
+              <button
+                type="button"
                 onClick={() => {
                   setSearchType("nome");
                   setSelectedAerodromes([]);
                 }}
+                className="button-item"
               >
                 Nome
-              </RB.Button>
-              <RB.Button
-                variant={searchType === "regiao" ? "primary" : "secondary"}
+              </button>
+              <button
+                type="button"
                 onClick={() => {
                   setSearchType("regiao");
                   setSelectedArea([]);
                 }}
+                className="button-item"
               >
                 Região
-              </RB.Button>
-            </RB.ButtonGroup>
-          </div>
-
-          {searchType === "nome" && (
-            <div className="searchNome">
-              <Multiselect
-                options={aerodromesData}
-                displayValue="label"
-                placeholder="Selecione os aeródromos"
-                onSelect={(aerodromes) =>
-                  setSelectedAerodromes(aerodromes.map((item) => item.code))
-                }
-                onRemove={(aerodromes) =>
-                  setSelectedAerodromes(aerodromes.map((item) => item.code))
-                }
-                showArrow
-                showCheckbox
-              />
+              </button>
             </div>
-          )}
-
-          {searchType === "regiao" && (
-            <div className="searchMap">
-              <MapContainer
-                center={center}
-                zoom={13}
-                scrollWheelZoom={false}
-                className="h-full z-0"
-              >
-                <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            {searchType === "nome" && (
+              <div className="searchNome">
+                <Multiselect
+                  options={aerodromesData}
+                  displayValue="label"
+                  placeholder="Selecione os aeródromos"
+                  onSelect={(aerodromes) =>
+                    setSelectedAerodromes(aerodromes.map((item) => item.code))
+                  }
+                  onRemove={(aerodromes) =>
+                    setSelectedAerodromes(aerodromes.map((item) => item.code))
+                  }
+                  showArrow
+                  showCheckbox
                 />
+              </div>
+            )}
 
-                <LocationMarker />
+            {searchType === "regiao" && (
+              <div className="searchMap">
+                <MapContainer
+                  center={center}
+                  zoom={13}
+                  scrollWheelZoom={false}
+                  className="h-full z-0"
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
 
-                {selectedArea.length === 1 && (
-                  <Rectangle
-                    bounds={[selectedArea[0], selectedArea[0]]}
-                    pathOptions={{ color: "red" }}
-                  />
-                )}
-                {selectedArea.length === 2 && (
-                  <Rectangle
-                    bounds={selectedArea}
-                    pathOptions={{ color: "red" }}
-                  />
-                )}
-              </MapContainer>
-            </div>
-          )}
+                  <LocationMarker />
+
+                  {selectedArea.length === 1 && (
+                    <Rectangle
+                      bounds={[selectedArea[0], selectedArea[0]]}
+                      pathOptions={{ color: "red" }}
+                    />
+                  )}
+                  {selectedArea.length === 2 && (
+                    <Rectangle
+                      bounds={selectedArea}
+                      pathOptions={{ color: "red" }}
+                    />
+                  )}
+                </MapContainer>
+              </div>
+            )}
+          </div>
 
           <div className="fieldBlock">
             <h2>Campos</h2>
@@ -240,7 +244,7 @@ export default function Map() {
 
             <div className="sortFields">
               <div className="sortField">
-                <RB.Form.Control
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -255,8 +259,8 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </RB.Form.Control>
-                <RB.Form.Control
+                </Form.Control>
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -269,11 +273,11 @@ export default function Map() {
                   <option value=""></option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </RB.Form.Control>
+                </Form.Control>
               </div>
 
               <div className="sortField">
-                <RB.Form.Control
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -288,8 +292,8 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </RB.Form.Control>
-                <RB.Form.Control
+                </Form.Control>
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -302,11 +306,11 @@ export default function Map() {
                   <option value=""></option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </RB.Form.Control>
+                </Form.Control>
               </div>
 
               <div className="sortField">
-                <RB.Form.Control
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -321,8 +325,8 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </RB.Form.Control>
-                <RB.Form.Control
+                </Form.Control>
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -335,11 +339,11 @@ export default function Map() {
                   <option value=""></option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </RB.Form.Control>
+                </Form.Control>
               </div>
 
               <div className="sortField">
-                <RB.Form.Control
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -354,8 +358,8 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </RB.Form.Control>
-                <RB.Form.Control
+                </Form.Control>
+                <Form.Control
                   as="select"
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -368,7 +372,7 @@ export default function Map() {
                   <option value=""></option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </RB.Form.Control>
+                </Form.Control>
               </div>
             </div>
           </div>
@@ -376,13 +380,13 @@ export default function Map() {
           <div className="fieldBlock">
             <h2>Itens adicionais</h2>
 
-            <RB.Form.Check
+            <Form.Check
               type="checkbox"
               label="METAR (Meteorologia em tempo presente)"
               checked={extraMetar}
               onChange={(event) => setExtraMetar(event.target.checked)}
             />
-            <RB.Form.Check
+            <Form.Check
               type="checkbox"
               label="TAF (Previsão meteorológica)"
               checked={extraTaf}
@@ -393,7 +397,7 @@ export default function Map() {
           <div className="fieldBlock">
             <h2>Limite de registros</h2>
 
-            <RB.Form.Control
+            <Form.Control
               type="text"
               placeholder="Limite"
               value={limit}
@@ -402,7 +406,7 @@ export default function Map() {
           </div>
 
           <div className="fieldBlock">
-            <RB.Button
+            <Button
               variant="primary"
               onClick={() => searchAdhoc()}
               disabled={
@@ -415,21 +419,21 @@ export default function Map() {
               }
             >
               Pesquisar
-            </RB.Button>
+            </Button>
           </div>
         </div>
 
-        <RB.Modal
+        <Modal
           show={searchData}
           dialogClassName="modal-90w"
           onHide={() => setSearchData(null)}
         >
-          <RB.Modal.Header closeButton>
-            <RB.Modal.Title id="contained-modal-title-vcenter">
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
               Resultados da pesquisa
-            </RB.Modal.Title>
-          </RB.Modal.Header>
-          <RB.Modal.Body>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             {searchData && searchData.length > 0 && (
               <RB.Table striped bordered hover>
                 <thead>
@@ -450,8 +454,8 @@ export default function Map() {
                 </tbody>
               </RB.Table>
             )}
-          </RB.Modal.Body>
-        </RB.Modal>
+          </Modal.Body>
+        </Modal>
         {/* <MapContainer
           center={center}
           zoom={13}
