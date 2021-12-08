@@ -4,7 +4,7 @@
 
 html,
 body {
-  background-color: #2e97bd;
+  background-color: rgb(7, 139, 228);
   border-radius: 8px;
   padding: 0;
   margin: 0;
@@ -147,13 +147,22 @@ selectName::placeholder {
   opacity: 1; /* Firefox */
 }
 
-.fieldBlock {
-  padding-bottom: 30px;
+.fields {
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 30px;
+}
+
+.sortContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sortField {
   display: flex;
-  width: 50%;
+  width: 100%;
 }
 
 .modal-90w {

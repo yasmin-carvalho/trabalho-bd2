@@ -36,7 +36,7 @@ export default function Map() {
   const [aerodromesData, setAerodromesData] = useState([]);
 
   const [selectedAerodromes, setSelectedAerodromes] = useState([]);
-  const [selectedArea, setSelectedArea] = useState([]);
+  const [mapRegionSelected, setSelectedArea] = useState([]);
 
   const [selectedFields, setSelectedFields] = useState([]);
 
@@ -60,14 +60,14 @@ export default function Map() {
     const map = useMapEvents({
       click(event) {
         console.log(event);
-        if (selectedArea.length === 0) {
+        if (mapRegionSelected.length === 0) {
           setSelectedArea([[event.latlng.lat, event.latlng.lng]]);
           return;
         }
 
-        if (selectedArea.length === 1) {
+        if (mapRegionSelected.length === 1) {
           setSelectedArea([
-            selectedArea[0],
+            mapRegionSelected[0],
             [event.latlng.lat, event.latlng.lng],
           ]);
           return;
@@ -96,7 +96,7 @@ export default function Map() {
     if (searchType === "nome") {
       params.codes = selectedAerodromes.join(",");
     } else {
-      params.region = selectedArea.map((item) => item.join(",")).join(";");
+      params.region = mapRegionSelected.map((item) => item.join(",")).join(";");
     }
 
     params.fields = selectedFields.join(",");
@@ -179,7 +179,6 @@ export default function Map() {
                     setSelectedAerodromes(aerodromes.map((item) => item.code))
                   }
                   showCheckbox
-                  style={{ color: "red" }}
                 />
               </div>
             )}
@@ -199,15 +198,15 @@ export default function Map() {
 
                   <LocationMarker />
 
-                  {selectedArea.length === 1 && (
+                  {mapRegionSelected.length === 1 && (
                     <Rectangle
-                      bounds={[selectedArea[0], selectedArea[0]]}
+                      bounds={[mapRegionSelected[0], mapRegionSelected[0]]}
                       pathOptions={{ color: "red" }}
                     />
                   )}
-                  {selectedArea.length === 2 && (
+                  {mapRegionSelected.length === 2 && (
                     <Rectangle
-                      bounds={selectedArea}
+                      bounds={mapRegionSelected}
                       pathOptions={{ color: "red" }}
                     />
                   )}
@@ -216,33 +215,47 @@ export default function Map() {
             )}
           </div>
 
-          <div className="fieldBlock">
-            <h2>Campos</h2>
+          <div className="fields">
+            <h1 className="aero-title">Selecione os campos</h1>
 
-            <Multiselect
-              options={[
-                { label: "Código", value: "code" },
-                { label: "Nome", value: "name" },
-                { label: "Latitude", value: "latitude" },
-                { label: "Longitude", value: "longitude" },
-              ]}
-              displayValue="label"
-              placeholder="Selecione os campos"
-              onSelect={(aerodromes) =>
-                setSelectedFields(aerodromes.map((item) => item.value))
-              }
-              onRemove={(aerodromes) =>
-                setSelectedFields(aerodromes.map((item) => item.value))
-              }
-              showArrow
-              showCheckbox
-            />
+            <div style={{ background: "white" }}>
+              <Multiselect
+                options={[
+                  { label: "Latitude", value: "latitude" },
+                  { label: "Longitude", value: "longitude" },
+                  { label: "Codigo", value: "code" },
+                  { label: "Nome", value: "name" },
+                ]}
+                displayValue="label"
+                placeholder="Escolha os campos"
+                onSelect={(aerodromes) =>
+                  setSelectedFields(aerodromes.map((item) => item.value))
+                }
+                onRemove={(aerodromes) =>
+                  setSelectedFields(aerodromes.map((item) => item.value))
+                }
+                showCheckbox
+                style={{
+                  chips: {
+                    background: "red",
+                  },
+                  multiselectContainer: {
+                    color: "red",
+                  },
+                  searchBox: {
+                    border: "none",
+                    "border-bottom": "1px solid blue",
+                    "border-radius": "0px",
+                  },
+                }}
+              />
+            </div>
           </div>
 
-          <div className="fieldBlock">
-            <h2>Ordenação</h2>
+          <div className="fields">
+            <h1 className="aero-title">Selecione a ordenação</h1>
 
-            <div className="sortFields">
+            <div className="sortContainer">
               <div className="sortField">
                 <Form.Control
                   as="select"
@@ -377,8 +390,8 @@ export default function Map() {
             </div>
           </div>
 
-          <div className="fieldBlock">
-            <h2>Itens adicionais</h2>
+          <div className="fields">
+            <h1 className="aero-title">Selecione o tipo de mensagem</h1>
 
             <Form.Check
               type="checkbox"
@@ -394,8 +407,8 @@ export default function Map() {
             />
           </div>
 
-          <div className="fieldBlock">
-            <h2>Limite de registros</h2>
+          <div className="fields">
+            <h1 className="aero-title">Selecione o limite</h1>
 
             <Form.Control
               type="text"
@@ -405,14 +418,14 @@ export default function Map() {
             />
           </div>
 
-          <div className="fieldBlock">
+          <div className="fields">
             <Button
               variant="primary"
               onClick={() => searchAdhoc()}
               disabled={
                 !(
                   (selectedAerodromes.length > 0 ||
-                    selectedArea.length === 2) &&
+                    mapRegionSelected.length === 2) &&
                   selectedFields.length > 0 &&
                   limit
                 )
