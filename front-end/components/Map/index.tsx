@@ -148,44 +148,44 @@ export default function Map() {
               <button
                 type="button"
                 onClick={() => {
-                  setSearchType("nome");
+                  setSearchType("region");
+                  setSelectedArea([]);
+                }}
+                className="button-item"
+              >
+                Região no mapa
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchType("name");
                   setSelectedAerodromes([]);
                 }}
                 className="button-item"
               >
                 Nome
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchType("regiao");
-                  setSelectedArea([]);
-                }}
-                className="button-item"
-              >
-                Região
-              </button>
             </div>
-            {searchType === "nome" && (
-              <div className="searchNome">
+            {searchType === "name" && (
+              <div className="selectName">
                 <Multiselect
                   options={aerodromesData}
                   displayValue="label"
-                  placeholder="Selecione os aeródromos"
+                  placeholder="Nome do aeródromo"
                   onSelect={(aerodromes) =>
                     setSelectedAerodromes(aerodromes.map((item) => item.code))
                   }
                   onRemove={(aerodromes) =>
                     setSelectedAerodromes(aerodromes.map((item) => item.code))
                   }
-                  showArrow
                   showCheckbox
+                  style={{ color: "red" }}
                 />
               </div>
             )}
 
-            {searchType === "regiao" && (
-              <div className="searchMap">
+            {searchType === "region" && (
+              <div className="selectRegion">
                 <MapContainer
                   center={center}
                   zoom={13}
