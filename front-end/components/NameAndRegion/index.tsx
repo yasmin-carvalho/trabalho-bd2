@@ -11,6 +11,10 @@ import {
 
 import Multiselect from "multiselect-react-dropdown";
 
+import "leaflet/dist/leaflet.css";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+import "leaflet-defaulticon-compatibility";
+
 const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 const NameAndRegion = ({
