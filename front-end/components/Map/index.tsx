@@ -446,9 +446,9 @@ export default function Map() {
             </div>
           </div>
 
-          <div className="fields">
-            <Button
-              variant="primary"
+          <div className="fields button-wrapper">
+            <button
+              type="button"
               onClick={() => searchAdhoc()}
               disabled={
                 !(
@@ -459,8 +459,8 @@ export default function Map() {
                 )
               }
             >
-              Pesquisar
-            </Button>
+              Consultar
+            </button>
           </div>
         </div>
 
@@ -497,17 +497,7 @@ export default function Map() {
             )}
           </Modal.Body>
         </Modal>
-        {/* <MapContainer
-          center={center}
-          zoom={13}
-          scrollWheelZoom={false}
-          className="h-full z-0"
-        >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-        </MapContainer> */}
+
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
           Guilherme de Assis Mello e Luiz Fernando de Souza

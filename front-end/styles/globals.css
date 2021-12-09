@@ -72,6 +72,8 @@ a {
   border-radius: 8px;
   margin-bottom: 20px;
   color: white;
+  border: 3px solid rgb(7, 4, 4);
+  border-radius: 8px;
 }
 
 .wrapper {
@@ -138,6 +140,29 @@ h2 {
 
 .selectName {
   color: red;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button-wrapper button {
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 100%;
+  color: white;
+  background: green;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.button-wrapper button:hover {
+  color: purple;
+  background: lightgreen;
 }
 
 selectName::placeholder {
@@ -207,7 +232,7 @@ selectName::placeholder {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border: 2px solid rgb(255, 85, 85);
+  border: 3px solid black;
   border-radius: 8px;
 }
 
@@ -219,11 +244,11 @@ selectName::placeholder {
 }
 
 .message-fields-inputs label:hover {
-  color: black;
+  color: red;
 }
 
 select {
-  border: 2px solid rgb(7, 4, 4);
+  border: 3px solid rgb(7, 4, 4);
   border-radius: 8px;
   padding: 4px 8px;
   cursor: pointer;
