@@ -1,12 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-
-import { LatLngExpression, LatLng } from "leaflet";
-import {
-  MapContainer,
-  TileLayer,
-  useMapEvents,
-  Rectangle,
-} from "react-leaflet";
+import { useEffect, useState } from "react";
 
 import Multiselect from "multiselect-react-dropdown";
 
@@ -16,65 +8,58 @@ import "leaflet-defaulticon-compatibility";
 
 import Services from "../../services";
 
+import NameAndRegion from "../NameAndRegion";
 import Modal from "../Modal";
 
-const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
+import { useAerodromes } from "../../hooks/useAerodromes";
+import { useFields } from "../../hooks/useFields";
 
 export default function Map() {
-  const [center, setCenter] = useState(defaultCenter);
+  const {
+    searchType,
+    aerodromesData,
+    selectedAerodromes,
+    mapRegionSelected,
+    selectedFields,
+    setSearchType,
+    setAerodromesData,
+    setSelectedAerodromes,
+    setSelectedArea,
+    setSelectedFields,
+  } = useAerodromes();
 
-  const [searchType, setSearchType] = useState("region");
-  const [aerodromesData, setAerodromesData] = useState([]);
-
-  const [selectedAerodromes, setSelectedAerodromes] = useState([]);
-  const [mapRegionSelected, setSelectedArea] = useState([]);
-
-  const [selectedFields, setSelectedFields] = useState([]);
-
-  const [order1, setOrder1] = useState(null);
-  const [order2, setOrder2] = useState(null);
-  const [order3, setOrder3] = useState(null);
-  const [order4, setOrder4] = useState(null);
-  const [asc1, setAsc1] = useState(null);
-  const [asc2, setAsc2] = useState(null);
-  const [asc3, setAsc3] = useState(null);
-  const [asc4, setAsc4] = useState(null);
-
-  const [extraMetar, setExtraMetar] = useState(false);
-  const [extraTaf, setExtraTaf] = useState(false);
+  const {
+    type1,
+    type2,
+    type3,
+    type4,
+    sort1,
+    sort2,
+    sort3,
+    sort4,
+    metarField,
+    tafField,
+    setMetarField,
+    setTafField,
+    setType1,
+    setType2,
+    setType3,
+    setType4,
+    setSort1,
+    setSort2,
+    setSort3,
+    setSort4,
+  } = useFields();
 
   const [limit, setLimit] = useState(0);
 
   const [searchData, setSearchData] = useState(null);
 
-  function LocationMarker() {
-    useMapEvents({
-      click(event) {
-        console.log(event);
-        if (mapRegionSelected.length === 0) {
-          setSelectedArea([[event.latlng.lat, event.latlng.lng]]);
-          return;
-        }
-
-        if (mapRegionSelected.length === 1) {
-          setSelectedArea([
-            mapRegionSelected[0],
-            [event.latlng.lat, event.latlng.lng],
-          ]);
-          return;
-        }
-
-        setSelectedArea([]);
-      },
-    });
-    return null;
-  }
-
   const handleFormControl = (event) => {
     if (event.target.value !== "") {
-      setOrder1(event.target.value);
+      setType1(event.target.value);
     } else {
-      setOrder1(null);
+      setType1(null);
     }
   };
 
@@ -101,25 +86,25 @@ export default function Map() {
     params.fields = selectedFields.join(",");
 
     const orders = [];
-    if (order1 && asc1) {
-      orders.push(order1 + "," + asc1);
+    if (type1 && sort1) {
+      orders.push(type1 + "," + sort1);
     }
-    if (order2 && asc2) {
-      orders.push(order2 + "," + asc2);
+    if (type2 && sort2) {
+      orders.push(type2 + "," + sort2);
     }
-    if (order3 && asc3) {
-      orders.push(order3 + "," + asc3);
+    if (type3 && sort3) {
+      orders.push(type3 + "," + sort3);
     }
-    if (order4 && asc4) {
-      orders.push(order4 + "," + asc4);
+    if (type4 && sort4) {
+      orders.push(type4 + "," + sort4);
     }
 
     if (orders.length > 0) {
       params.order = orders.join(";");
     }
 
-    params.metar = extraMetar;
-    params.taf = extraTaf;
+    params.metar = metarField;
+    params.taf = tafField;
 
     params.limit = limit;
 
@@ -150,94 +135,14 @@ export default function Map() {
       </h1>
       <div className="container">
         <div className="wrapper">
-          <div className="name-and-region">
-            <h1 className="aero-title">Selecione os aeródromos</h1>
-
-            <div className="button-container">
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchType("region");
-                  setSelectedArea([]);
-                }}
-                className="button-item"
-              >
-                Região no mapa
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchType("name");
-                  setSelectedAerodromes([]);
-                }}
-                className="button-item"
-              >
-                Nome
-              </button>
-            </div>
-            {searchType === "name" && (
-              <div className="selectName">
-                <Multiselect
-                  options={aerodromesData}
-                  displayValue="label"
-                  placeholder="Nome do aeródromo"
-                  onSelect={(aerodromes) =>
-                    setSelectedAerodromes(aerodromes.map((item) => item.code))
-                  }
-                  onRemove={(aerodromes) =>
-                    setSelectedAerodromes(aerodromes.map((item) => item.code))
-                  }
-                  showCheckbox
-                  style={{
-                    chips: {
-                      background: "red",
-                    },
-                    multiselectContainer: {
-                      color: "red",
-                    },
-                    searchBox: {
-                      border: "3px solid rgb(17, 10, 10)",
-                      "border-bottom": "3px solid rgb(17, 10, 10)",
-                      "border-radius": "8px",
-                      background: "white",
-                      cursor: "pointer",
-                    },
-                  }}
-                />
-              </div>
-            )}
-
-            {searchType === "region" && (
-              <div className="selectRegion">
-                <MapContainer
-                  center={center}
-                  zoom={13}
-                  scrollWheelZoom={false}
-                  className="h-full z-0"
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-
-                  <LocationMarker />
-
-                  {mapRegionSelected.length === 1 && (
-                    <Rectangle
-                      bounds={[mapRegionSelected[0], mapRegionSelected[0]]}
-                      pathOptions={{ color: "red" }}
-                    />
-                  )}
-                  {mapRegionSelected.length === 2 && (
-                    <Rectangle
-                      bounds={mapRegionSelected}
-                      pathOptions={{ color: "red" }}
-                    />
-                  )}
-                </MapContainer>
-              </div>
-            )}
-          </div>
+          <NameAndRegion
+            setSearchType={setSearchType}
+            setSelectedArea={setSelectedArea}
+            setSelectedAerodromes={setSelectedAerodromes}
+            searchType={searchType}
+            aerodromesData={aerodromesData}
+            mapRegionSelected={mapRegionSelected}
+          />
 
           <div className="fields">
             <h1 className="aero-title">Selecione os campos</h1>
@@ -299,9 +204,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setAsc1(event.target.value);
+                      setSort1(event.target.value);
                     } else {
-                      setAsc1(null);
+                      setSort1(null);
                     }
                   }}
                 >
@@ -315,9 +220,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setOrder2(event.target.value);
+                      setType2(event.target.value);
                     } else {
-                      setOrder2(null);
+                      setType2(null);
                     }
                   }}
                 >
@@ -334,9 +239,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setAsc2(event.target.value);
+                      setSort2(event.target.value);
                     } else {
-                      setAsc2(null);
+                      setSort2(null);
                     }
                   }}
                 >
@@ -350,9 +255,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setOrder3(event.target.value);
+                      setType3(event.target.value);
                     } else {
-                      setOrder3(null);
+                      setType3(null);
                     }
                   }}
                 >
@@ -371,9 +276,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setAsc3(event.target.value);
+                      setSort3(event.target.value);
                     } else {
-                      setAsc3(null);
+                      setSort3(null);
                     }
                   }}
                 >
@@ -387,9 +292,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setOrder4(event.target.value);
+                      setType4(event.target.value);
                     } else {
-                      setOrder4(null);
+                      setType4(null);
                     }
                   }}
                 >
@@ -407,9 +312,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setAsc4(event.target.value);
+                      setSort4(event.target.value);
                     } else {
-                      setAsc4(null);
+                      setSort4(null);
                     }
                   }}
                 >
@@ -429,8 +334,8 @@ export default function Map() {
                 <input
                   type="checkbox"
                   id="metar"
-                  checked={extraMetar}
-                  onChange={(event) => setExtraMetar(event.target.checked)}
+                  checked={metarField}
+                  onChange={(event) => setMetarField(event.target.checked)}
                 />
                 <label htmlFor="metar">METAR</label>
               </div>
@@ -438,8 +343,8 @@ export default function Map() {
                 <input
                   type="checkbox"
                   id="taf"
-                  checked={extraTaf}
-                  onChange={(event) => setExtraTaf(event.target.checked)}
+                  checked={tafField}
+                  onChange={(event) => setTafField(event.target.checked)}
                 />
                 <label htmlFor="taf">TAF</label>
               </div>
