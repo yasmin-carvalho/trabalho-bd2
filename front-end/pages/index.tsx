@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Relatório Adhoc</title>
+        <title>REDEMET - Relatório Adhoc</title>
         <link rel="icon" href="/map-icon.png" />
       </Head>
       <main className="h-screen">

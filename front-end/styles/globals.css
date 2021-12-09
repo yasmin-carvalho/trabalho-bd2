@@ -160,9 +160,17 @@ selectName::placeholder {
   align-items: center;
 }
 
-.sortField {
+.selectSortField {
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   width: 100%;
+  font-weight: bold;
+  color: red;
+}
+
+.selectSortField span {
+  color: white;
 }
 
 .modal-90w {

@@ -32,7 +32,7 @@ export default function Map() {
   const latRef = useRef(null);
   const longRef = useRef(null);
 
-  const [searchType, setSearchType] = useState(null);
+  const [searchType, setSearchType] = useState("region");
   const [aerodromesData, setAerodromesData] = useState([]);
 
   const [selectedAerodromes, setSelectedAerodromes] = useState([]);
@@ -78,6 +78,14 @@ export default function Map() {
     });
     return null;
   }
+
+  const handleFormControl = (event) => {
+    if (event.target.value !== "") {
+      setOrder1(event.target.value);
+    } else {
+      setOrder1(null);
+    }
+  };
 
   const getAerodromesList = async () => {
     const response = await Services.redemet.getAerodromesList();
@@ -256,23 +264,15 @@ export default function Map() {
             <h1 className="aero-title">Selecione a ordenação</h1>
 
             <div className="sortContainer">
-              <div className="sortField">
-                <Form.Control
-                  as="select"
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setOrder1(event.target.value);
-                    } else {
-                      setOrder1(null);
-                    }
-                  }}
-                >
-                  <option value=""></option>
+              <div className="selectSortField">
+                <Form.Control as="select" onChange={handleFormControl}>
+                  <option value="">Selecione</option>
                   <option value="code">Código</option>
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </Form.Control>
+                <span>-{">"}</span>
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -283,13 +283,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
                 </Form.Control>
               </div>
-
-              <div className="sortField">
+              |
+              <div className="selectSortField">
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -300,12 +300,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="code">Código</option>
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </Form.Control>
+                <span>-{">"}</span>
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -316,13 +317,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
                 </Form.Control>
               </div>
-
-              <div className="sortField">
+              |
+              <div className="selectSortField">
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -333,12 +334,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="code">Código</option>
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </Form.Control>
+                <span>-{">"}</span>
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -349,13 +351,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
                 </Form.Control>
               </div>
-
-              <div className="sortField">
+              |
+              <div className="selectSortField">
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -366,12 +368,13 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="code">Código</option>
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </Form.Control>
+                <span>-{">"}</span>
                 <Form.Control
                   as="select"
                   onChange={(event) => {
@@ -382,7 +385,7 @@ export default function Map() {
                     }
                   }}
                 >
-                  <option value=""></option>
+                  <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
                 </Form.Control>
