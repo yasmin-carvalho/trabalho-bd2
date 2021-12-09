@@ -142,7 +142,17 @@ export default function Map() {
 
   return (
     <div className="relative h-screen">
-      <h1 className="header">REDEMET</h1>
+      <h1 className="header">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/235/235861.png"
+          alt=""
+        />
+        REDEMET
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/235/235861.png"
+          alt=""
+        />
+      </h1>
       <h1 className="sub-header">
         Relatórios Ad-Hoc gerados dinamicamente para a base de dados analisada
         :)
@@ -290,7 +300,10 @@ export default function Map() {
                   <option value="longitude">Longitude</option>
                 </select>
 
-                <span>-{">"}</span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
 
                 <select
                   onChange={(event) => {
@@ -306,7 +319,7 @@ export default function Map() {
                   <option value="desc">Decrescente</option>
                 </select>
               </div>
-              <b></b>
+
               <div className="selectSortField">
                 <select
                   onChange={(event) => {
@@ -323,7 +336,10 @@ export default function Map() {
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </select>
-                <span>-{">"}</span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -338,7 +354,7 @@ export default function Map() {
                   <option value="desc">Decrescente</option>
                 </select>
               </div>
-              <b></b>
+
               <div className="selectSortField">
                 <select
                   onChange={(event) => {
@@ -355,7 +371,12 @@ export default function Map() {
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </select>
-                <span>-{">"}</span>
+
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
+
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
@@ -370,7 +391,7 @@ export default function Map() {
                   <option value="desc">Decrescente</option>
                 </select>
               </div>
-              <b></b>
+
               <div className="selectSortField">
                 <select
                   onChange={(event) => {
@@ -387,7 +408,10 @@ export default function Map() {
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
                 </select>
-                <span>-{">"}</span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
 
                 <select
                   onChange={(event) => {

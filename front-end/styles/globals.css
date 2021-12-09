@@ -31,6 +31,12 @@ a {
   border-radius: 8px;
 }
 
+.header img {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+}
+
 .sub-header {
   display: flex;
   justify-content: center;
@@ -106,7 +112,12 @@ a {
   .button-container {
     flex-direction: column;
   }
+
+  .selectSortField img {
+    display: none;
+  }
 }
+
 .button-item:hover {
   background-color: yellow;
 }
@@ -182,13 +193,7 @@ selectName::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.sortContainer b {
-  width: 10px;
-  margin: 0 5px;
-  height: 50px;
-  background-color: black;
+  flex-wrap: wrap;
 }
 
 .selectSortField {
@@ -198,10 +203,12 @@ selectName::placeholder {
   width: 100%;
   font-weight: bold;
   color: red;
+  margin-bottom: 10px;
 }
 
-.selectSortField span {
-  color: white;
+.selectSortField img {
+  width: 30px;
+  height: 30px;
 }
 
 .limit-input-wrapper {
@@ -252,4 +259,5 @@ select {
   border-radius: 8px;
   padding: 4px 8px;
   cursor: pointer;
+  width: 40%;
 }
