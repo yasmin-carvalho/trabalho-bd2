@@ -5,17 +5,10 @@ import {
   MapContainer,
   TileLayer,
   useMapEvents,
-  MapConsumer,
-  Marker,
-  Popup,
-  Polygon,
-  Tooltip,
   Rectangle,
 } from "react-leaflet";
 
 import Multiselect from "multiselect-react-dropdown";
-
-import { ButtonGroup, Button, Form, Modal, Table } from "react-bootstrap";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -23,14 +16,12 @@ import "leaflet-defaulticon-compatibility";
 
 import Services from "../../services";
 
+import Modal from "../Modal";
+
 const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
 
 export default function Map() {
   const [center, setCenter] = useState(defaultCenter);
-  const [modal, setModal] = useState(false);
-  const textRef = useRef(null);
-  const latRef = useRef(null);
-  const longRef = useRef(null);
 
   const [searchType, setSearchType] = useState("region");
   const [aerodromesData, setAerodromesData] = useState([]);
@@ -57,7 +48,7 @@ export default function Map() {
   const [searchData, setSearchData] = useState(null);
 
   function LocationMarker() {
-    const map = useMapEvents({
+    useMapEvents({
       click(event) {
         console.log(event);
         if (mapRegionSelected.length === 0) {
@@ -488,39 +479,7 @@ export default function Map() {
           </div>
         </div>
 
-        <Modal
-          show={searchData}
-          dialogClassName="modal-90w"
-          onHide={() => setSearchData(null)}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Resultados da pesquisa
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {searchData && searchData.length > 0 && (
-              <Table striped bordered hover>
-                <thead>
-                  <tr key={"header"}>
-                    {Object.keys(searchData[0]).map((key) => (
-                      <th>{key}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {searchData.map((item) => (
-                    <tr key={item.id}>
-                      {Object.values(item).map((val) => (
-                        <td>{val}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-          </Modal.Body>
-        </Modal>
+        <Modal searchData={searchData} setSearchData={setSearchData} />
 
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
