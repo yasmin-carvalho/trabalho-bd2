@@ -160,6 +160,13 @@ selectName::placeholder {
   align-items: center;
 }
 
+.sortContainer b {
+  width: 10px;
+  margin: 0 5px;
+  height: 50px;
+  background-color: black;
+}
+
 .selectSortField {
   display: flex;
   justify-content: space-evenly;
@@ -176,4 +183,37 @@ selectName::placeholder {
 .modal-90w {
   width: auto;
   max-width: 90vw;
+}
+.message-fields {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: pointer;
+}
+
+.message-fields-inputs {
+  width: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px solid rgb(255, 85, 85);
+  border-radius: 8px;
+}
+
+.message-fields-inputs label {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.message-fields-inputs label:hover {
+  color: black;
+}
+
+select {
+  border: 2px solid rgb(7, 4, 4);
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
 }

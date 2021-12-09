@@ -226,7 +226,7 @@ export default function Map() {
           <div className="fields">
             <h1 className="aero-title">Selecione os campos</h1>
 
-            <div style={{ background: "white" }}>
+            <div>
               <Multiselect
                 options={[
                   { label: "Latitude", value: "latitude" },
@@ -251,9 +251,11 @@ export default function Map() {
                     color: "red",
                   },
                   searchBox: {
-                    border: "none",
+                    border: "3px solid rgb(17, 10, 10)",
                     "border-bottom": "1px solid blue",
-                    "border-radius": "0px",
+                    "border-radius": "8px",
+                    background: "white",
+                    cursor: "pointer",
                   },
                 }}
               />
@@ -265,16 +267,17 @@ export default function Map() {
 
             <div className="sortContainer">
               <div className="selectSortField">
-                <Form.Control as="select" onChange={handleFormControl}>
+                <select onChange={handleFormControl} id="select-one">
                   <option value="">Selecione</option>
                   <option value="code">Código</option>
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </Form.Control>
+                </select>
+
                 <span>-{">"}</span>
-                <Form.Control
-                  as="select"
+
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setAsc1(event.target.value);
@@ -286,12 +289,11 @@ export default function Map() {
                   <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </Form.Control>
+                </select>
               </div>
-              |
+              <b></b>
               <div className="selectSortField">
-                <Form.Control
-                  as="select"
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setOrder2(event.target.value);
@@ -305,10 +307,9 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </Form.Control>
+                </select>
                 <span>-{">"}</span>
-                <Form.Control
-                  as="select"
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setAsc2(event.target.value);
@@ -320,12 +321,11 @@ export default function Map() {
                   <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </Form.Control>
+                </select>
               </div>
-              |
+              <b></b>
               <div className="selectSortField">
-                <Form.Control
-                  as="select"
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setOrder3(event.target.value);
@@ -339,10 +339,9 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </Form.Control>
+                </select>
                 <span>-{">"}</span>
-                <Form.Control
-                  as="select"
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setAsc3(event.target.value);
@@ -354,12 +353,11 @@ export default function Map() {
                   <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </Form.Control>
+                </select>
               </div>
-              |
+              <b></b>
               <div className="selectSortField">
-                <Form.Control
-                  as="select"
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setOrder4(event.target.value);
@@ -373,10 +371,10 @@ export default function Map() {
                   <option value="name">Nome</option>
                   <option value="latitude">Latitude</option>
                   <option value="longitude">Longitude</option>
-                </Form.Control>
+                </select>
                 <span>-{">"}</span>
-                <Form.Control
-                  as="select"
+
+                <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setAsc4(event.target.value);
@@ -388,7 +386,7 @@ export default function Map() {
                   <option value="">Selecione</option>
                   <option value="asc">Crescente</option>
                   <option value="desc">Decrescente</option>
-                </Form.Control>
+                </select>
               </div>
             </div>
           </div>
@@ -396,18 +394,26 @@ export default function Map() {
           <div className="fields">
             <h1 className="aero-title">Selecione o tipo de mensagem</h1>
 
-            <Form.Check
-              type="checkbox"
-              label="METAR (Meteorologia em tempo presente)"
-              checked={extraMetar}
-              onChange={(event) => setExtraMetar(event.target.checked)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="TAF (Previsão meteorológica)"
-              checked={extraTaf}
-              onChange={(event) => setExtraTaf(event.target.checked)}
-            />
+            <div className="message-fields">
+              <div className="message-fields-inputs">
+                <input
+                  type="checkbox"
+                  id="metar"
+                  checked={extraMetar}
+                  onChange={(event) => setExtraMetar(event.target.checked)}
+                />
+                <label htmlFor="metar">METAR</label>
+              </div>
+              <div className="message-fields-inputs">
+                <input
+                  type="checkbox"
+                  id="taf"
+                  checked={extraTaf}
+                  onChange={(event) => setExtraTaf(event.target.checked)}
+                />
+                <label htmlFor="taf">TAF</label>
+              </div>
+            </div>
           </div>
 
           <div className="fields">
