@@ -15,7 +15,7 @@ import {
 
 import Multiselect from "multiselect-react-dropdown";
 
-import { ButtonGroup, Button, Form, Modal } from "react-bootstrap";
+import { ButtonGroup, Button, Form, Modal, Table } from "react-bootstrap";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
@@ -52,7 +52,7 @@ export default function Map() {
   const [extraMetar, setExtraMetar] = useState(false);
   const [extraTaf, setExtraTaf] = useState(false);
 
-  const [limit, setLimit] = useState(100);
+  const [limit, setLimit] = useState(0);
 
   const [searchData, setSearchData] = useState(null);
 
@@ -187,6 +187,21 @@ export default function Map() {
                     setSelectedAerodromes(aerodromes.map((item) => item.code))
                   }
                   showCheckbox
+                  style={{
+                    chips: {
+                      background: "red",
+                    },
+                    multiselectContainer: {
+                      color: "red",
+                    },
+                    searchBox: {
+                      border: "3px solid rgb(17, 10, 10)",
+                      "border-bottom": "3px solid rgb(17, 10, 10)",
+                      "border-radius": "8px",
+                      background: "white",
+                      cursor: "pointer",
+                    },
+                  }}
                 />
               </div>
             )}
@@ -252,7 +267,7 @@ export default function Map() {
                   },
                   searchBox: {
                     border: "3px solid rgb(17, 10, 10)",
-                    "border-bottom": "1px solid blue",
+                    "border-bottom": "3px solid rgb(17, 10, 10)",
                     "border-radius": "8px",
                     background: "white",
                     cursor: "pointer",
@@ -419,12 +434,16 @@ export default function Map() {
           <div className="fields">
             <h1 className="aero-title">Selecione o limite</h1>
 
-            <Form.Control
-              type="text"
-              placeholder="Limite"
-              value={limit}
-              onChange={(event) => setLimit(event.target.value)}
-            />
+            <div className="limit-input-wrapper">
+              <b>--{" >"}</b>
+              <input
+                type="text"
+                placeholder="Digite o limite"
+                value={limit}
+                onChange={(event) => setLimit(+event.target.value)}
+              />
+              <b>{" <"}--</b>
+            </div>
           </div>
 
           <div className="fields">
@@ -457,7 +476,7 @@ export default function Map() {
           </Modal.Header>
           <Modal.Body>
             {searchData && searchData.length > 0 && (
-              <RB.Table striped bordered hover>
+              <Table striped bordered hover>
                 <thead>
                   <tr key={"header"}>
                     {Object.keys(searchData[0]).map((key) => (
@@ -474,7 +493,7 @@ export default function Map() {
                     </tr>
                   ))}
                 </tbody>
-              </RB.Table>
+              </Table>
             )}
           </Modal.Body>
         </Modal>

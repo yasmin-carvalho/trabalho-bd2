@@ -138,7 +138,6 @@ h2 {
 
 .selectName {
   color: red;
-  background: white;
 }
 
 selectName::placeholder {
@@ -178,6 +177,18 @@ selectName::placeholder {
 
 .selectSortField span {
   color: white;
+}
+
+.limit-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.limit-input-wrapper input {
+  border: 3px solid black;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .modal-90w {
