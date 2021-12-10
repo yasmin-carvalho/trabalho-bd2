@@ -15,23 +15,24 @@ export const useAerodromes = () => {
   const [limit, setLimit] = useState(0);
 
   const [searchData, setSearchData] = useState(null);
+  const [metarField, setMetarField] = useState(false);
+  const [tafField, setTafField] = useState(false);
 
-  const {
-    type1,
-    type2,
-    type3,
-    type4,
-    sort1,
-    sort2,
-    sort3,
-    sort4,
-    metarField,
-    tafField,
-  } = useFields();
+  const [type1, setType1] = useState(null);
+  const [type2, setType2] = useState(null);
+  const [type3, setType3] = useState(null);
+  const [type4, setType4] = useState(null);
+  const [sort1, setSort1] = useState(null);
+  const [sort2, setSort2] = useState(null);
+  const [sort3, setSort3] = useState(null);
+  const [sort4, setSort4] = useState(null);
+
+
+  
 
   const searchAdhoc = async () => {
     const params = {} as any;
-    if (searchType === "nome") {
+    if (searchType === "name") {
       params.codes = selectedAerodromes.join(",");
     } else {
       params.region = mapRegionSelected.map((item) => item.join(",")).join(";");
@@ -60,10 +61,14 @@ export const useAerodromes = () => {
     params.metar = metarField;
     params.taf = tafField;
 
+    console.log("123", orders)
+
     params.limit = limit;
 
+    console.log("ASDVAWEVFA", params)
     const response = await Services.redemet.getAdHoc(params);
     setSearchData(response.data);
+   
   };
 
   return {
@@ -82,5 +87,25 @@ export const useAerodromes = () => {
     limit,
     setLimit,
     searchAdhoc,
+    setMetarField,
+    setTafField,
+    metarField, 
+    tafField, 
+    type1,
+    type2,
+    type3,
+    type4,
+    sort1,
+    sort2,
+    sort3,
+    sort4,
+    setType1,
+    setType2,
+    setType3,
+    setType4,
+    setSort1,
+    setSort2,
+    setSort3,
+    setSort4,
   };
 };

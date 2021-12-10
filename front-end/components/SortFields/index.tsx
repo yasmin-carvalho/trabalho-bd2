@@ -1,3 +1,4 @@
+import { useAerodromes } from "hooks/useAerodromes";
 import { useFields } from "../../hooks/useFields";
 
 const SortFields = () => {
@@ -10,7 +11,7 @@ const SortFields = () => {
     setSort2,
     setSort3,
     setSort4,
-  } = useFields();
+  } = useAerodromes();
 
   return (
     <div className="fields">
