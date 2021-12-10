@@ -1,40 +1,48 @@
-import { Modal as ResultModal, Table } from "react-bootstrap";
+import { useState } from "react";
 
-const Modal = ({ searchData, setSearchData }) => {
+const Modal = ({ openModal, setOpenModal, searchData, setSearchData }) => {
+  const modal = document.getElementById("myModal");
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
   return (
-    <ResultModal
-      show={searchData}
-      dialogClassName="modal-90w"
-      onHide={() => setSearchData(null)}
-    >
-      <ResultModal.Header closeButton>
-        <ResultModal.Title id="contained-modal-title-vcenter">
-          Resultados da pesquisa
-        </ResultModal.Title>
-      </ResultModal.Header>
-      <ResultModal.Body>
-        {searchData && searchData.length > 0 && (
-          <Table striped bordered hover>
-            <thead>
-              <tr key={"header"}>
-                {Object.keys(searchData[0]).map((key) => (
-                  <th>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {searchData.map((item) => (
-                <tr key={item.id}>
-                  {Object.values(item).map((val) => (
-                    <td>{val}</td>
+    <>
+      <button onClick={() => setOpenModal(true)}>Open Modal</button>
+      <div id="myModal" className={`modal-container ${true && "open-modal"}`}>
+        <div className="modal-content">
+          <span onClick={() => setSearchData(null)} className="close">
+            &#8592; <b>Voltar</b>
+          </span>
+
+          <div className="result-container">
+            <h1 className="aero-title">Resultado da consulta</h1>
+
+            {searchData && searchData.length > 0 && (
+              <table id="table">
+                <thead>
+                  <tr key={"header"}>
+                    {Object.keys(searchData[0]).map((key) => (
+                      <th>{key}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {searchData.map((item) => (
+                    <tr key={item.id}>
+                      {Object.values(item).map((val) => (
+                        <td>{val}</td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
-      </ResultModal.Body>
-    </ResultModal>
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

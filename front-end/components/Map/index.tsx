@@ -3,8 +3,11 @@ import SelectFields from "../SelectFields";
 import Modal from "../Modal";
 
 import { useAerodromes } from "../../hooks/useAerodromes";
+import { useState } from "react";
 
 export default function Map() {
+  const [openModal, setOpenModal] = useState(false);
+
   const {
     searchType,
     aerodromesData,
@@ -35,7 +38,7 @@ export default function Map() {
   } = useAerodromes();
 
   return (
-    <div className="relative h-screen">
+    <div className="out-container">
       <h1 className="header">
         <img
           src="https://cdn-icons-png.flaticon.com/512/235/235861.png"
@@ -274,7 +277,12 @@ export default function Map() {
           </div>
         </div>
 
-        <Modal searchData={searchData} setSearchData={setSearchData} />
+        <Modal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          searchData={searchData}
+          setSearchData={setSearchData}
+        />
 
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
