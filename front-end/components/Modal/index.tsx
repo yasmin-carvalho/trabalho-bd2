@@ -10,7 +10,10 @@ const Modal = ({ openModal, setOpenModal, searchData, setSearchData }) => {
   return (
     <>
       <button onClick={() => setOpenModal(true)}>Open Modal</button>
-      <div id="myModal" className={`modal-container ${true && "open-modal"}`}>
+      <div
+        id="myModal"
+        className={`modal-container ${searchData && "open-modal"}`}
+      >
         <div className="modal-content">
           <span onClick={() => setSearchData(null)} className="close">
             &#8592; <b>Voltar</b>
