@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useFields } from "../hooks/useFields";
+import { useEffect, useState } from "react";
 
 import Services from "../services";
 
@@ -26,9 +25,6 @@ export const useAerodromes = () => {
   const [sort2, setSort2] = useState(null);
   const [sort3, setSort3] = useState(null);
   const [sort4, setSort4] = useState(null);
-
-
-  
 
   const searchAdhoc = async () => {
     const params = {} as any;
@@ -61,15 +57,27 @@ export const useAerodromes = () => {
     params.metar = metarField;
     params.taf = tafField;
 
-    console.log("123", orders)
-
     params.limit = limit;
 
-    console.log("ASDVAWEVFA", params)
     const response = await Services.redemet.getAdHoc(params);
     setSearchData(response.data);
-   
   };
+
+  const getAerodromesList = async () => {
+    const response = await Services.redemet.getAerodromesList();
+    setAerodromesData(
+      response.data.slice(0, 1000).map((item) => ({
+        label: item.code + " - " + item.name,
+        code: item.code,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    //getAerodromesList();
+  }, []);
 
   return {
     searchType,
@@ -89,8 +97,8 @@ export const useAerodromes = () => {
     searchAdhoc,
     setMetarField,
     setTafField,
-    metarField, 
-    tafField, 
+    metarField,
+    tafField,
     type1,
     type2,
     type3,

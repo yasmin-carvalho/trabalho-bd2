@@ -1,14 +1,8 @@
-import { useEffect } from "react";
-
-import Services from "../../services";
-
 import NameAndRegion from "../NameAndRegion";
-import SortFields from "../SortFields";
 import SelectFields from "../SelectFields";
 import Modal from "../Modal";
 
 import { useAerodromes } from "../../hooks/useAerodromes";
-import { useFields } from "../../hooks/useFields";
 
 export default function Map() {
   const {
@@ -18,7 +12,6 @@ export default function Map() {
     mapRegionSelected,
     selectedFields,
     setSearchType,
-    setAerodromesData,
     setSelectedAerodromes,
     setSelectedArea,
     setSelectedFields,
@@ -27,9 +20,9 @@ export default function Map() {
     limit,
     setLimit,
     searchAdhoc,
-    metarField, 
-    tafField, 
-    setMetarField, 
+    metarField,
+    tafField,
+    setMetarField,
     setTafField,
     setType1,
     setType2,
@@ -40,27 +33,6 @@ export default function Map() {
     setSort3,
     setSort4,
   } = useAerodromes();
-
- 
-
-  const getAerodromesList = async () => {
-    const response = await Services.redemet.getAerodromesList();
-    setAerodromesData(
-      response.data.slice(0, 1000).map((item) => ({
-        label: item.code + " - " + item.name,
-        code: item.code,
-        latitude: item.latitude,
-        longitude: item.longitude,
-      }))
-    );
-  };
-
-  console.log('palavrinha', aerodromesData)
-  console.log('palavrao', searchData)
-
-  useEffect(() => {
-    getAerodromesList();
-  }, []);
 
   return (
     <div className="relative h-screen">
@@ -93,155 +65,155 @@ export default function Map() {
           <SelectFields setSelectedFields={setSelectedFields} />
 
           <div className="fields">
-      <h1 className="aero-title">Selecione a ordenação</h1>
-      <div className="sortContainer">
-        <div className="selectSortField">
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setType1(event.target.value);
-              } else {
-                setType1(null);
-              }
-            }}
-            id="select-one"
-          >
-            <option value="">Selecione</option>
-            <option value="code">Código</option>
-            <option value="name">Nome</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-          </select>
+            <h1 className="aero-title">Selecione a ordenação</h1>
+            <div className="sortContainer">
+              <div className="selectSortField">
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setType1(event.target.value);
+                    } else {
+                      setType1(null);
+                    }
+                  }}
+                  id="select-one"
+                >
+                  <option value="">Selecione</option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </select>
 
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-            alt=""
-          />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
 
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setSort1(event.target.value);
-              } else {
-                setSort1(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="asc">Crescente</option>
-            <option value="desc">Decrescente</option>
-          </select>
-        </div>
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setSort1(event.target.value);
+                    } else {
+                      setSort1(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </select>
+              </div>
 
-        <div className="selectSortField">
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setType2(event.target.value);
-              } else {
-                setType2(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="code">Código</option>
-            <option value="name">Nome</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-          </select>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-            alt=""
-          />
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setSort2(event.target.value);
-              } else {
-                setSort2(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="asc">Crescente</option>
-            <option value="desc">Decrescente</option>
-          </select>
-        </div>
+              <div className="selectSortField">
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setType2(event.target.value);
+                    } else {
+                      setType2(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </select>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setSort2(event.target.value);
+                    } else {
+                      setSort2(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </select>
+              </div>
 
-        <div className="selectSortField">
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setType3(event.target.value);
-              } else {
-                setType3(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="code">Código</option>
-            <option value="name">Nome</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-          </select>
+              <div className="selectSortField">
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setType3(event.target.value);
+                    } else {
+                      setType3(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </select>
 
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-            alt=""
-          />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
 
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setSort3(event.target.value);
-              } else {
-                setSort3(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="asc">Crescente</option>
-            <option value="desc">Decrescente</option>
-          </select>
-        </div>
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setSort3(event.target.value);
+                    } else {
+                      setSort3(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </select>
+              </div>
 
-        <div className="selectSortField">
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setType4(event.target.value);
-              } else {
-                setType4(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="code">Código</option>
-            <option value="name">Nome</option>
-            <option value="latitude">Latitude</option>
-            <option value="longitude">Longitude</option>
-          </select>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-            alt=""
-          />
+              <div className="selectSortField">
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setType4(event.target.value);
+                    } else {
+                      setType4(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="code">Código</option>
+                  <option value="name">Nome</option>
+                  <option value="latitude">Latitude</option>
+                  <option value="longitude">Longitude</option>
+                </select>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
+                  alt=""
+                />
 
-          <select
-            onChange={(event) => {
-              if (event.target.value !== "") {
-                setSort4(event.target.value);
-              } else {
-                setSort4(null);
-              }
-            }}
-          >
-            <option value="">Selecione</option>
-            <option value="asc">Crescente</option>
-            <option value="desc">Decrescente</option>
-          </select>
-        </div>
-      </div>{" "}
-    </div>
+                <select
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setSort4(event.target.value);
+                    } else {
+                      setSort4(null);
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="asc">Crescente</option>
+                  <option value="desc">Decrescente</option>
+                </select>
+              </div>
+            </div>{" "}
+          </div>
 
           <div className="fields">
             <h1 className="aero-title">Selecione o tipo de mensagem</h1>
@@ -263,7 +235,7 @@ export default function Map() {
                   checked={tafField}
                   onChange={(event) => setTafField(event.target.checked)}
                 />
-                {console.log(metarField)}
+
                 <label htmlFor="taf">TAF</label>
               </div>
             </div>

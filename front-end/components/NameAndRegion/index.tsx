@@ -30,7 +30,6 @@ const NameAndRegion = ({
   function LocationMarker() {
     useMapEvents({
       click(event) {
-        console.log(event);
         if (mapRegionSelected.length === 0) {
           setSelectedArea([[event.latlng.lat, event.latlng.lng]]);
           return;
