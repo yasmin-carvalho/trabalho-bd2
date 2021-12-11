@@ -76,7 +76,7 @@ export const useAerodromes = () => {
   };
 
   useEffect(() => {
-    //getAerodromesList();
+    getAerodromesList();
   }, []);
 
   return {

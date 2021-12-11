@@ -263,14 +263,6 @@ export default function Map() {
             <button
               type="button"
               onClick={() => searchAdhoc()}
-              disabled={
-                !(
-                  (selectedAerodromes.length > 0 ||
-                    mapRegionSelected.length === 2) &&
-                  selectedFields.length > 0 &&
-                  limit
-                )
-              }
             >
               Consultar
             </button>
