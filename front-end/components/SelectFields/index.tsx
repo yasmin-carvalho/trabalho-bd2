@@ -31,8 +31,8 @@ const SelectFields = ({ setSelectedFields }) => {
             },
             searchBox: {
               border: "3px solid rgb(17, 10, 10)",
-              "border-bottom": "3px solid rgb(17, 10, 10)",
-              "border-radius": "8px",
+              borderBottom: "3px solid rgb(17, 10, 10)",
+              borderRadius: "8px",
               background: "white",
               cursor: "pointer",
             },

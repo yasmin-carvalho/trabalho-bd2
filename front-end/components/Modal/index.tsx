@@ -1,15 +1,13 @@
-import { useState } from "react";
-
-const Modal = ({ openModal, setOpenModal, searchData, setSearchData }) => {
+const Modal = ({ searchData, setSearchData }) => {
   const modal = document.getElementById("myModal");
   window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
   };
+
   return (
     <>
-      <button onClick={() => setOpenModal(true)}>Open Modal</button>
       <div
         id="myModal"
         className={`modal-container ${searchData && "open-modal"}`}

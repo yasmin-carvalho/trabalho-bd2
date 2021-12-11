@@ -17,7 +17,6 @@
     "next": "10.0.4",
     "postcss": "^8.2.1",
     "react": "^17.0.1",
-    "react-bootstrap": "^2.0.3",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.0.5",
     "tailwindcss": "^2.0.2"

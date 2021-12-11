@@ -3,17 +3,12 @@ import SelectFields from "../SelectFields";
 import Modal from "../Modal";
 
 import { useAerodromes } from "../../hooks/useAerodromes";
-import { useState } from "react";
 
 export default function Map() {
-  const [openModal, setOpenModal] = useState(false);
-
   const {
     searchType,
     aerodromesData,
-    selectedAerodromes,
     mapRegionSelected,
-    selectedFields,
     setSearchType,
     setSelectedAerodromes,
     setSelectedArea,
@@ -27,14 +22,8 @@ export default function Map() {
     tafField,
     setMetarField,
     setTafField,
-    setType1,
-    setType2,
-    setType3,
-    setType4,
-    setSort1,
-    setSort2,
-    setSort3,
-    setSort4,
+    setType,
+    setSort,
   } = useAerodromes();
 
   return (
@@ -74,9 +63,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setType1(event.target.value);
+                      setType(event.target.value);
                     } else {
-                      setType1(null);
+                      setType(null);
                     }
                   }}
                   id="select-one"
@@ -96,9 +85,9 @@ export default function Map() {
                 <select
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setSort1(event.target.value);
+                      setSort(event.target.value);
                     } else {
-                      setSort1(null);
+                      setSort(null);
                     }
                   }}
                 >
@@ -107,115 +96,7 @@ export default function Map() {
                   <option value="desc">Decrescente</option>
                 </select>
               </div>
-
-              <div className="selectSortField">
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setType2(event.target.value);
-                    } else {
-                      setType2(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="code">Código</option>
-                  <option value="name">Nome</option>
-                  <option value="latitude">Latitude</option>
-                  <option value="longitude">Longitude</option>
-                </select>
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-                  alt=""
-                />
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setSort2(event.target.value);
-                    } else {
-                      setSort2(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="asc">Crescente</option>
-                  <option value="desc">Decrescente</option>
-                </select>
-              </div>
-
-              <div className="selectSortField">
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setType3(event.target.value);
-                    } else {
-                      setType3(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="code">Código</option>
-                  <option value="name">Nome</option>
-                  <option value="latitude">Latitude</option>
-                  <option value="longitude">Longitude</option>
-                </select>
-
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-                  alt=""
-                />
-
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setSort3(event.target.value);
-                    } else {
-                      setSort3(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="asc">Crescente</option>
-                  <option value="desc">Decrescente</option>
-                </select>
-              </div>
-
-              <div className="selectSortField">
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setType4(event.target.value);
-                    } else {
-                      setType4(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="code">Código</option>
-                  <option value="name">Nome</option>
-                  <option value="latitude">Latitude</option>
-                  <option value="longitude">Longitude</option>
-                </select>
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Curved_Arrow.svg/1200px-Curved_Arrow.svg.png"
-                  alt=""
-                />
-
-                <select
-                  onChange={(event) => {
-                    if (event.target.value !== "") {
-                      setSort4(event.target.value);
-                    } else {
-                      setSort4(null);
-                    }
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  <option value="asc">Crescente</option>
-                  <option value="desc">Decrescente</option>
-                </select>
-              </div>
-            </div>{" "}
+            </div>
           </div>
 
           <div className="fields">
@@ -260,21 +141,13 @@ export default function Map() {
           </div>
 
           <div className="fields button-wrapper">
-            <button
-              type="button"
-              onClick={() => searchAdhoc()}
-            >
+            <button type="button" onClick={() => searchAdhoc()}>
               Consultar
             </button>
           </div>
         </div>
 
-        <Modal
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          searchData={searchData}
-          setSearchData={setSearchData}
-        />
+        <Modal searchData={searchData} setSearchData={setSearchData} />
 
         <h1 className="footer">
           Feito por: Rodrigo Luz, Yasmin Karolyne, Guilherme M. Bortolleto,
