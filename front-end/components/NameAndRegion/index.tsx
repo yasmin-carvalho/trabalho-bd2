@@ -15,7 +15,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 
-const defaultCenter: LatLngExpression = new LatLng(-22.4126781, -45.4520494);
+const defaultCenter: LatLngExpression = new LatLng(-12.3815286, -53.7513932);
 
 const NameAndRegion = ({
   setSearchType,
@@ -111,7 +111,7 @@ const NameAndRegion = ({
         <div className="selectRegion">
           <MapContainer
             center={center}
-            zoom={13}
+            zoom={4}
             scrollWheelZoom={false}
             className="h-full z-0"
           >
