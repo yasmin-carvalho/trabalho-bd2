@@ -10,18 +10,18 @@ import api from "../api";
  * Redemet API calls
  */
 
-export async function getAerodromes() {
+export async function getAerodromesList() {
   try {
-    const response = await api.get("/aerodromos");
+    const response = await api.get("/aerodromes_list");
     return response;
   } catch (error) {
     return error;
   }
 }
 
-export async function getSigmet() {
+export async function getAdHoc(params: any) {
   try {
-    const response = await api.get("/sigmet");
+    const response = await api.get("/adhoc", { params });
     return response;
   } catch (error) {
     return error;

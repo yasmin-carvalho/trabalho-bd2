@@ -1,6 +1,6 @@
-import { getAerodromes, getSigmet } from "./redemet";
+import { getAerodromesList, getAdHoc } from "./redemet";
 
 export default {
-  getAerodromes,
-  getSigmet,
+  getAerodromesList,
+  getAdHoc,
 };

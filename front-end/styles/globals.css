@@ -4,7 +4,7 @@
 
 html,
 body {
-  background-color: #2e97bd;
+  background-color: rgb(7, 139, 228);
   border-radius: 8px;
   padding: 0;
   margin: 0;
@@ -21,12 +21,6 @@ a {
   box-sizing: border-box;
 }
 
-.container {
-  height: 90vh;
-  margin: auto;
-  margin-top: 8px;
-}
-
 .header {
   display: flex;
   justify-content: center;
@@ -35,6 +29,12 @@ a {
   font-size: 20px;
   font-weight: bold;
   border-radius: 8px;
+}
+
+.header img {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
 }
 
 .sub-header {
@@ -57,7 +57,308 @@ a {
   color: white;
   font-size: 16px;
   font-weight: bold;
-  border-top: 1px solid lightgreen;
-  margin-top: 10px;
+  border-top: 2px solid black;
+  margin-top: 20px;
   text-align: center;
+}
+
+.container {
+  height: 100vh;
+  margin: auto;
+  padding: 0 16px;
+}
+
+.out-container {
+  height: 100vh;
+}
+
+.aero-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(203, 15, 209);
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: white;
+  border: 3px solid rgb(7, 4, 4);
+  border-radius: 8px;
+}
+
+.wrapper {
+  width: 100%;
+  margin-top: 30px;
+  padding: 18px;
+  border: 3px solid white;
+  border-radius: 8px;
+
+  box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px,
+    rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px,
+    rgb(255, 85, 85) 0px 0px 0px 15px;
+}
+
+.name-and-region {
+  margin-bottom: 20px;
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+  .button-container {
+    flex-direction: column;
+  }
+
+  .selectSortField img {
+    display: none;
+  }
+}
+
+.button-item:hover {
+  background-color: yellow;
+}
+
+.button-item:focus {
+  background-color: yellow;
+}
+
+.button-item {
+  width: 200px;
+  font-size: 21px;
+  border: 3px solid black;
+  border-radius: 8px;
+  background-color: white;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.4em !important;
+  font-weight: 700 !important;
+}
+
+.open {
+  display: block !important;
+}
+
+.selectRegion {
+  width: 100%;
+  height: 500px;
+}
+
+.selectName {
+  color: red;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button-wrapper button {
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 100%;
+  color: white;
+  background: green;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.button-wrapper button:hover {
+  color: purple;
+  background: lightgreen;
+}
+
+selectName::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red;
+  opacity: 1; /* Firefox */
+}
+
+.fields {
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 30px;
+}
+
+.sortContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.selectSortField {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
+  color: red;
+  margin-bottom: 10px;
+}
+
+.selectSortField img {
+  width: 30px;
+  height: 30px;
+}
+
+.limit-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.limit-input-wrapper input {
+  border: 3px solid black;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-90w {
+  width: auto;
+  max-width: 90vw;
+}
+.message-fields {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: pointer;
+}
+
+.message-fields-inputs {
+  width: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+.message-fields-inputs label {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.message-fields-inputs label:hover {
+  color: red;
+}
+
+select {
+  border: 3px solid rgb(7, 4, 4);
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+  width: 40%;
+}
+
+.modal-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.open-modal {
+  display: block;
+}
+
+.modal-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 3px solid red;
+  border-radius: 8px;
+  width: 80%;
+  position: relative;
+  box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px,
+    rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px,
+    rgb(255, 85, 85) 0px 0px 0px 15px;
+}
+
+.close {
+  float: left;
+  font-size: 21px;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 0.5;
+  margin-top: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close b {
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 3px;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.result-container {
+  margin-top: 25px;
+  width: 100%;
+}
+
+#table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+
+  border: 3px solid black;
+  border-radius: 8px !important;
+}
+
+#table td,
+#table th {
+  border: 3px solid black;
+  padding: 8px;
+}
+
+#table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#table tr:hover {
+  background-color: #ddd;
+}
+
+#table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
 }
